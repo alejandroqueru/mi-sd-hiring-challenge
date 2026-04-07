@@ -46,7 +46,8 @@ body {
 
 .state-message,
 .error-message {
-  font-size: 16px;
+  font-size: 20px;
+  padding: 20px;
 }
 
 .state-message {
