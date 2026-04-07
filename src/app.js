@@ -1,18 +1,84 @@
 import { convertDate } from "./utils";
 import { fetchGeoByZip, fetchForecastByCoordinates } from "./api";
-import { getTodayDateString } from "./utils";
+import {
+  getTodayDateString,
+  formatDayLabel,
+  getWeatherIcon,
+  formatTemperatureRange,
+  formatLocation,
+  getForecastDays,
+} from "./utils";
 
 const DEFAULT_ZIP_CODE = 90210;
 
-async function init() {
-    try {
-        const geo = await fetchGeoByZip(DEFAULT_ZIP_CODE);
-        const forecast = await fetchForecastByCoordinates(geo.latitude, geo.longitude, getTodayDateString());
-        console.log(geo);
-        console.log(forecast);
-    } catch(error){
-        console.log(error)
-    }
+function renderLoading() {
+  const contentElement = document.getElementById("content");
+  contentElement.innerHTML =
+    '<div class="state-message">Loading Forecast....</div>';
 }
 
-document.addEventListener('DOMContentLoaded', init);
+function renderError(message) {
+  const contentElement = document.getElementById("content");
+  contentElement.innerHTML = `<div class="state-message error">Error: ${message}</div>`;
+}
+
+function createForecastCard(day) {
+  return `
+    <div class="forecast-card">
+        <div class="forecast-card-header">
+            ${formatDayLabel(day.time)}
+        </div>
+        <div class="forecast-card-content">
+            <img class="forecast-card-icon" src="${getWeatherIcon(
+              day.icon
+            )}" alt="${day.icon ?? "Wheather icon"}/>
+            <div class="forecast-card-details">
+                <div class="forecast-card-summary">${day.summary}</div>
+                <div class="forecast-card-temps">
+                ${formatTemperatureRange(
+                  day.temperatureHigh,
+                  day.temperatureLow
+                )}
+                </div>
+            </div>
+        </div>
+    </div>
+  `;
+}
+
+function renderForecast(geo, forecast) {
+  const titleElement = document.getElementById("header-title");
+  const contentElement = document.getElementById("content");
+  const days = getForecastDays(forecast, 3);
+
+  titleElement.textContent = `WEATHER FORECAST FOR ${formatLocation(geo)}`;
+
+  if (days.length === 0) {
+    renderError("No forecast data available");
+    return;
+  }
+
+  const forecastMarkup = days.map(createForecastCard).join("");
+
+  contentElement.innerHTML = `
+    <div class="forecast-row">
+        ${forecastMarkup}
+    </div>`;
+}
+
+async function init() {
+  try {
+    renderLoading();
+    const geo = await fetchGeoByZip(DEFAULT_ZIP_CODE);
+    const forecast = await fetchForecastByCoordinates(
+      geo.latitude,
+      geo.longitude,
+      getTodayDateString()
+    );
+    renderForecast(geo, forecast);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", init);
