@@ -7,6 +7,7 @@ import {
   formatTemperatureRange,
   formatLocation,
   getForecastDays,
+  formatWeatherSummary
 } from "./utils";
 
 const DEFAULT_ZIP_CODE = 90210;
@@ -19,7 +20,7 @@ function renderLoading() {
 
 function renderError(message) {
   const contentElement = document.getElementById("content");
-  contentElement.innerHTML = `<div class="state-message error">Error: ${message}</div>`;
+  contentElement.innerHTML = `<div class="error-message">Error: ${message}</div>`;
 }
 
 function createForecastCard(day) {
@@ -31,9 +32,9 @@ function createForecastCard(day) {
         <div class="forecast-card-content">
             <img class="forecast-card-icon" src="${getWeatherIcon(
               day.icon
-            )}" alt="${day.icon ?? "Wheather icon"}/>
+            )}" alt="${day.icon ?? "Wheather icon"}"/>
             <div class="forecast-card-details">
-                <div class="forecast-card-summary">${day.summary}</div>
+                <div class="forecast-card-summary">${formatWeatherSummary(day.icon,day.summary)}</div>
                 <div class="forecast-card-temps">
                 ${formatTemperatureRange(
                   day.temperatureHigh,
@@ -77,7 +78,8 @@ async function init() {
     );
     renderForecast(geo, forecast);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    renderError(error.message || 'Something went wrong while loading the forecast.')
   }
 }
 

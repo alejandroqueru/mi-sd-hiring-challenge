@@ -1,0 +1,110 @@
+body {
+  margin: 0;
+  background: #fff;
+  color: #000;
+  display: flex; 
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.forecast-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+#header-title {
+  font-size: 40px; 
+  margin: 0;
+  padding-left: 50px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  color: #8f8f8f;
+}
+
+#header-accent {
+  display: inline-block;
+  width: 40px;
+  height: 4px;
+  background: #eedf7b;
+  flex-shrink: 0;
+}
+
+.forecast-content {
+  min-height: 200px;
+  display: flex;
+  gap: 32px;
+}
+
+.state-message,
+.error-message {
+  font-size: 16px;
+}
+
+.state-message {
+  color: #8f8f8f;
+}
+
+.error-message {
+  color: red;
+}
+
+.forecast-row {
+  display: flex;
+  gap: 32px;
+}
+
+.forecast-card {
+  flex: 1;
+}
+
+.forecast-card-header {
+  min-width: 270px;
+  margin-bottom: 24px;
+  padding: 12px 18px;
+  background: #78b7c9;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.forecast-card-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 0 10px;
+}
+
+.forecast-card-icon {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+
+.forecast-card-details {
+  padding-top: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.forecast-card-summary {
+  margin-bottom: 16px;
+  font-size: 22px;
+  line-height: 1.1;
+  color: #2f3b4a;
+}
+
+.forecast-card-temps {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2f3b4a;
+}

@@ -65,6 +65,25 @@ export function formatDayLabel(time) {
   return `${DAY_NAMES[date.getDay()]}: `;
 }
 
+export function formatWeatherSummary(icon, summary) {
+  const iconMap = {
+    sunny: "Clear",
+    snow: "Snow",
+    rain: "Rain",
+    cloudy: "Partly Cloudy",
+  };
+
+  if (iconMap[icon]) {
+    return iconMap[icon];
+  }
+
+  if (!summary) {
+    return "Clear";
+  }
+  
+  return summary;
+}
+
 export function getWeatherIcon(icon) {
   return WEATHER_ICONS[icon] ?? WEATHER_ICONS.sunny;
 }
