@@ -1,9 +1,9 @@
-const GE0_BASE_URL = 'https://se-weather-api.herokuapp.com/api/v1/geo';
+const GEO_BASE_URL = 'https://se-weather-api.herokuapp.com/api/v1/geo';
 const FORECAST_BASE_URL = 'https://se-weather-api.herokuapp.com/api/v1/forecast';
 
 export async function fetchGeoByZip(zipCode) {
     const normalizedZipCode = String(zipCode).trim();
-    const url = `${GE0_BASE_URL}?zip_code=${encodeURIComponent(normalizedZipCode)}`;
+    const url = `${GEO_BASE_URL}?zip_code=${encodeURIComponent(normalizedZipCode)}`;
     const response = await fetch(url);
 
     if (!response.ok) {

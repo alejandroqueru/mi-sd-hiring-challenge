@@ -1,4 +1,3 @@
-import { convertDate } from "./utils";
 import { fetchGeoByZip, fetchForecastByCoordinates } from "./api";
 import {
   getTodayDateString,
@@ -7,7 +6,8 @@ import {
   formatTemperatureRange,
   formatLocation,
   getForecastDays,
-  formatWeatherSummary
+  formatWeatherSummary,
+  isValidZipCode
 } from "./utils";
 
 const DEFAULT_ZIP_CODE = 90210;
@@ -52,7 +52,7 @@ function renderForecast(geo, forecast) {
   const contentElement = document.getElementById("content");
   const days = getForecastDays(forecast, 3);
 
-  titleElement.textContent = `WEATHER FORECAST FOR ${formatLocation(geo)}`;
+  titleElement.textContent = `WEATHER FORECAST FOR ${formatLocation(geo).toUpperCase()}`;
 
   if (days.length === 0) {
     renderError("No forecast data available");
@@ -70,6 +70,11 @@ function renderForecast(geo, forecast) {
 async function init() {
   try {
     renderLoading();
+
+    if (!isValidZipCode(DEFAULT_ZIP_CODE)) {
+      throw new Error(`Invalid ZIP code: ${DEFAULT_ZIP_CODE}`);
+    }
+
     const geo = await fetchGeoByZip(DEFAULT_ZIP_CODE);
     const forecast = await fetchForecastByCoordinates(
       geo.latitude,
